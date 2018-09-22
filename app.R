@@ -1,4 +1,5 @@
 ## Weather & Leaflet app.R ##
+# By ecampos.phd@gmail.com
 library(shiny)
 library(leaflet)
 library(shinydashboard)
@@ -78,11 +79,11 @@ ui <- dashboardPage(
         
         p(class = "small", "Weather Data from ",
           a("OpenWeatherMap", href="https://openweathermap.org")
-        )
+        ),
         
-        #p(class = "small",
-        #  a("Source code", href = "https://github.com/rstudio/webinars/tree/master/2015-04")
-        #)
+        p(class = "small",
+          a("Source code", href = "https://github.com/edwinfcampos/WeatherDashboard")
+        )
     )
   ),
   
@@ -118,7 +119,7 @@ server <- function(input, output) {
   output$map <- renderLeaflet({
     leaflet() %>%
       addTiles() %>%
-      setView(input$lon, input$lat, zoom = 17) %>%
+      setView(input$lon, input$lat, zoom = 12) %>%
       addPopups(input$lon, input$lat, 'Here is the <b>Location</b> selected')
   })
   
@@ -161,6 +162,13 @@ server <- function(input, output) {
     )
   })
   
+  # Map click
+  #input$map_click is an event that is sent when the map background or basemap is clicked. The value is a list with lat and lng.
+  observeEvent(input$mymap_click,{
+    print(input$mymap_click)
+  })
+  
+  # Reset button
   observeEvent(input$refresh, {
     js$refresh();
     }
